@@ -1,0 +1,68 @@
+{
+  "name": "typedoc-plugin-solidity",
+  "version": "0.0.0",
+  "description": "A typedoc plugin for adding highlighting for solidity code.",
+  "main": "index.js",
+  "keywords": [
+    "typedocplugin",
+    "typedoc",
+    "solidity",
+    "highlight.js"
+  ],
+  "license": "MIT",
+  "author": "Sebastian Siemssen <fubhy@fubhy.com>",
+  "homepage": "https://github.com/fubhy/typedoc-plugin-solidity",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fubhy/typedoc-plugin-solidity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fubhy/typedoc-plugin-solidity/issues"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cp package.json LICENSE README.md dist",
+    "prewatch": "cp package.json dist",
+    "watch": "tsc --watch",
+    "format": "prettier --write src/{*,**/*}.ts",
+    "lint": "yarn prettier --list-different src/{*,**/*}.ts",
+    "typecheck": "tsc --noEmit",
+    "preversion": "yarn typecheck && yarn lint && yarn build",
+    "postversion": "cp package.json dist",
+    "prerelease": "yarn version",
+    "release": "git push --tags && yarn publish dist --new-version $npm_package_version",
+    "postrelease": "git push"
+  },
+  "dependencies": {
+    "highlightjs-solidity": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/highlight.js": "^9.12.3",
+    "highlight.js": "^9.18.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.2",
+    "prettier": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "typedoc": "^0.17.4",
+    "typescript": "^3.8.3"
+  },
+  "peerDependencies": {
+    "typedoc": "^0.17.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "yarn format",
+      "git add"
+    ]
+  }
+}
